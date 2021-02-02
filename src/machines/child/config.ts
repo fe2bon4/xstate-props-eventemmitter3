@@ -3,15 +3,13 @@ export const config = {
 
   states: {
     initializing: {
-      entry: ['logInitializing'],
-      invoke: {
-        src: 'childService'
-      },
-      on: {
-        '*': {
-          actions: ['logEvent']
+      entry: ['emitToParent'],
+      after: {
+        1000: {
+          actions: ['logEvent'],
+          target: 'initializing'
         }
       }
-    },
+    }
   },
 }

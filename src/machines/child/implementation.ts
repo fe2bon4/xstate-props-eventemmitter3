@@ -7,7 +7,7 @@ import {
  } from './types'
 
 
-const prepend = () => `${new Date().toISOString()} [Sender]`
+const prepend = () => `${new Date().toISOString()} [Child]`
 
 export const implementation: MachineOptions<Context,any > = {
   services: {
@@ -27,6 +27,12 @@ export const implementation: MachineOptions<Context,any > = {
     logInitializing: () => console.log(prepend(), 'Initializing'),
     logIdle: () => console.log(prepend(), 'is now Idle'),
     logEvent: (_, e ) => console.log(prepend(), e ),
+    emitToParent: ( { comm }, event, { state } ) => {
+      comm.emit('message', {
+        type: "CHILD_EVENT",
+        state
+      })
+    }
   },
   guards: {},
   activities: {},
